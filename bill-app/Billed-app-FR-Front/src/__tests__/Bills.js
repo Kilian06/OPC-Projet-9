@@ -11,6 +11,11 @@ import {mockedBills} from "../__mocks__/store"
 
 import Bills from "../containers/Bills.js";
 import mockStore from "../__mocks__/store";
+import '@testing-library/jest-dom'
+
+
+
+
 
 
 import router from "../app/Router.js";
@@ -109,8 +114,6 @@ describe("When i click on Nouvelle note de frais button ", () => {
     const getBills = jest.fn(() => billsNew.getBills());
     const value = await getBills();
     expect(getBills).toHaveBeenCalled();
-    console.log(bills.length)
-    console.log(value.length)
     expect(value.length).toBe(billsmock.length);
   })
   })
