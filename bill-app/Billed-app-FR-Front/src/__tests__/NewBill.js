@@ -1,4 +1,3 @@
-
 /**
  * @jest-environment jsdom
  */
@@ -12,7 +11,6 @@ import { ROUTES, ROUTES_PATH } from "../constants/routes"
 import mockStore from "../__mocks__/store.js"
 import router from "../app/Router.js";
 
-window.alert = jest.fn()
 jest.mock("../app/Store", () => mockStore)
 
 describe("Given I am connected as an employee", () => {
@@ -28,7 +26,7 @@ Object.defineProperty(window, 'localStorage', { value: localStorageMock
   document.body.innerHTML = html
 
 
-
+// Test pour vérifier l'apparition d'un message et de la désactivation du bouton lors du chargement d'une PJ
 describe("When i load a file with the wrong extension in the input form", () => {
   test ("Then an error msg is not hidden and the sub is disable", () => {
     
@@ -55,7 +53,7 @@ describe("When i load a file with the wrong extension in the input form", () => 
 
   })
 });
-
+// Test pour vérifier la non apparition d'un message et de la réactivation du bouton lors du chargement d'une PJ
 describe("When i download the attached file in the correct format and i input information in the form ", () => {
   test ("Then the sub is not disable, the error msg is hidden ans the form is sent", () => {
     
@@ -84,71 +82,71 @@ describe("When i download the attached file in the correct format and i input in
     screen.getByTestId('form-new-bill').addEventListener('submit', submitBill)
     fireEvent.submit(screen.getByTestId('form-new-bill'))
     expect(submitBill).toHaveBeenCalled()
-    expect(screen.getByTestId('btn-new-bill')).toBeTruthy()
+    expect(screen.getByTestId('btn-new-bill')).toBeTruthy() // trop loin ? plus de l'unitaire ?
   })
 });
 });
 
 
-// // Début Test POST
+// Début Test POST
+// Création d'une bill schema complet
+describe('Given I am connected as an employee', () => {
+  describe("When I submit a bill with all information in input", () => {
+     test("Then the bill is created and i return to the bill menu", async() => {
 
-// describe('Given I am connected as an employee', () => {//Etant donné que je suis un utilisateur connecté en tant que Salarié
-//   describe("When I submit a bill with all information in input", () => {//Lorsque je soumets le formulaire rempli
-//      test("Then the bill is created", async() => {//Ensuite, la facture est créée
-
-//         const html = NewBillUI()
-//         document.body.innerHTML = html
+        const html = NewBillUI()
+        document.body.innerHTML = html
         
-//         const onNavigate = (pathname) => {
-//            document.body.innerHTML = ROUTES({pathname});
-//         };
-// //SIMILATION DE LA CONNECTION DE L EMPLOYEE
-//         Object.defineProperty(window, 'localStorage', { value: localStorageMock })
-//         window.localStorage.setItem('user', JSON.stringify({
-//               type: 'Employee',
-//               email: "jeanmich@test.tld",
-//         }))
-// //SIMULATION DE CREATION DE LA PAGE DE FACTURE
-//         const newBill = new NewBill({
-//               document,
-//               onNavigate,
-//               store: null,
-//               localStorage: window.localStorage,
-//         })
-//         const validBill = {
-//               type: "Hôtel et logement",
-//               name: "Teuf au negresco",
-//               date: "1989-01-02",
-//               amount: 1400,
-//               vat: 280,
-//               pct: 20,
-//               commentary: "Grosse teuf",
-//               fileUrl: "../facture.jpg",
-//               fileName: "facture.jpg",
-//         };
-//         // Charger les valeurs dans les champs
-//         screen.getByTestId("expense-type").value = validBill.type;
-//         screen.getByTestId("expense-name").value = validBill.name;
-//         screen.getByTestId("datepicker").value = validBill.date;
-//         screen.getByTestId("amount").value = validBill.amount;
-//         screen.getByTestId("vat").value = validBill.vat;
-//         screen.getByTestId("pct").value = validBill.pct;
-//         screen.getByTestId("commentary").value = validBill.commentary;
+        const onNavigate = (pathname) => {
+           document.body.innerHTML = ROUTES({pathname});
+        };
 
-//         newBill.fileName = validBill.fileName
-//         newBill.fileUrl = validBill.fileUrl;
+        Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+        window.localStorage.setItem('user', JSON.stringify({
+              type: 'Employee',
+              email: "jeanmich@test.tld",
+        }))
 
-//         newBill.updateBill = jest.fn();//SIMULATION DE  CLICK
-//         const handleSubmit = jest.fn((e) => newBill.handleSubmit(e))//ENVOI DU FORMULAIRE
+        const newBill = new NewBill({
+              document,
+              onNavigate,
+              store: null,
+              localStorage: window.localStorage,
+        })
+        const validBill = {
+              type: "Hôtel et logement",
+              name: "soiree au negresco",
+              date: "1989-01-02",
+              amount: 1400,
+              vat: 280,
+              pct: 20,
+              commentary: "Grosse teuf",
+              fileUrl: "../facture.jpg",
+              fileName: "facture.jpg",
+        };
 
-//         const form = screen.getByTestId("form-new-bill");
-//         form.addEventListener("submit", handleSubmit);
-//         fireEvent.submit(form)
+        screen.getByTestId("expense-type").value = validBill.type;
+        screen.getByTestId("expense-name").value = validBill.name;
+        screen.getByTestId("amount").value = validBill.amount;
+        screen.getByTestId("datepicker").value = validBill.date;
+        screen.getByTestId("vat").value = validBill.vat;
+        screen.getByTestId("pct").value = validBill.pct;
+        screen.getByTestId("commentary").value = validBill.commentary;
+        newBill.fileUrl = validBill.fileUrl;
+        newBill.fileName = validBill.fileName
 
-//         expect(handleSubmit).toHaveBeenCalled()//VERIFICATION DE L ENVOI DU FORMULAIRE
-//         expect(newBill.updateBill).toHaveBeenCalled()//VERIFIE SI LE FORMULAIRE EST ENVOYER DANS LE STORE
-//         expect(screen.getByText("Teuf au negresco")).toBeTruthy
-        
-//      })
-//     });
-//   
+        const handleSubmit = jest.fn((e) => newBill.handleSubmit(e))
+
+        const form = screen.getByTestId("form-new-bill");
+        form.addEventListener("submit", handleSubmit);
+        fireEvent.submit(form)
+
+        expect(handleSubmit).toHaveBeenCalled()
+        console.log(screen)
+        expect(screen.getByTestId('btn-new-bill')).toBeTruthy()
+        // expect(screen.getByText("soiree au negresco")).toBeTruthy
+  
+     })
+    });
+  });
+  
