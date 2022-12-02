@@ -152,7 +152,7 @@ describe("Given I am connected as an employee", () => {
     });
   });
 });
-
+// Test Erreur 404 et 500 (idem dashboard)
 describe("When an error occurs on API", () => {
   // Avant que le test commence
   beforeEach(() => {
