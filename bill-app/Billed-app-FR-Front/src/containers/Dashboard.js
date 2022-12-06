@@ -86,7 +86,6 @@ export default class {
   }
 
   handleEditTicket(e, bill, bills) {
-    console.log(this.counter)
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
     if (this.counter % 2 === 0) {
@@ -135,7 +134,6 @@ export default class {
     if (this.counter === undefined || this.index !== index) this.counter = 0
     if (this.index === undefined || this.index !== index) this.index = index
     if (this.counter % 2 === 0) {
-      console.log(this.counter)
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
@@ -147,8 +145,6 @@ export default class {
       this.counter ++
 
     }
-    console.log(bills)
-    console.log(filteredBills(bills, getStatus(this.index)))
         bills.forEach(bill => {
           if(this.document.getElementById(`open-bill${bill.id}`)){
             this.document.getElementById(`open-bill${bill.id}`).addEventListener("click",(e) => {

@@ -4,6 +4,7 @@
 
 import "@testing-library/jest-dom";
 import { fireEvent, screen } from "@testing-library/dom";
+import userEvent from "@testing-library/user-event";
 import NewBillUI from "../views/NewBillUI.js";
 import NewBill from "../containers/NewBill.js";
 import { localStorageMock } from "../__mocks__/localStorage.js";
@@ -35,21 +36,17 @@ describe("Given I am connected as an employee", () => {
       const newBill = new NewBill({
         document,
         onNavigate,
-        store: null,
+        store: mockStore,
         localStorage: window,
         localStorage,
-      });
-      const LoadFile = jest.fn((e) => newBill.handleChangeFile(e));
+      });  
       const fichier = screen.getByTestId("file");
       const verifFormat = new File(["scan.pdf"], "scan.pdf", {
         type: "application/pdf",
       });
-      fichier.addEventListener("change", LoadFile);
-      fireEvent.change(fichier, { target: { files: [verifFormat] } });
-
-      expect(LoadFile).toHaveBeenCalled();
-      expect(screen.getByTestId("btn-sub-newbill").disabled).toBe(true);
-      expect(screen.getByTestId("msgErrorFormat").hidden).toBe(false);
+      userEvent.upload(fichier,verifFormat)
+      expect(screen.getByTestId("btn-sub-newbill").disabled).toBe(true)
+      expect(screen.getByTestId("msgErrorFormat").hidden).toBe(false)
     });
   });
   // Test pour vérifier la non apparition d'un message et de la réactivation du bouton lors du chargement d'une PJ
@@ -61,29 +58,24 @@ describe("Given I am connected as an employee", () => {
       const newBill = new NewBill({
         document,
         onNavigate,
-        store: null,
+        store: mockStore,
         localStorage: window,
         localStorage,
-      });
-      const LoadFile = jest.fn((e) => newBill.handleChangeFile(e));
+      });  
       const fichier = screen.getByTestId("file");
-      const verifFormat = new File(["scan.png"], "scan.png", {
+      const verifFormat = new File(["scan"], "scan.png", {
         type: "image/png",
       });
-      fichier.addEventListener("change", LoadFile);
-      fireEvent.change(fichier, { target: { files: [verifFormat] } });
-      console.log(screen.getByTestId("msgErrorFormat").hidden);
-
-      expect(LoadFile).toHaveBeenCalled();
-      // expect(screen.getByTestId("btn-sub-newbill").disabled).toBe(false)
-      // expect(screen.getByTestId("msgErrorFormat").hidden).toBe(true)
+      userEvent.upload(fichier,verifFormat)
+      expect(screen.getByTestId("btn-sub-newbill").disabled).toBe(false)
+      expect(screen.getByTestId("msgErrorFormat").hidden).toBe(true)
       const submitBill = jest.fn((e) => newBill.handleSubmit(e));
       screen
         .getByTestId("form-new-bill")
         .addEventListener("submit", submitBill);
       fireEvent.submit(screen.getByTestId("form-new-bill"));
       expect(submitBill).toHaveBeenCalled();
-      expect(screen.getByTestId("btn-new-bill")).toBeTruthy(); // trop loin ? plus de l'unitaire ?
+      expect(screen.getByTestId("btn-new-bill")).toBeTruthy();
     });
   });
 });
@@ -114,7 +106,7 @@ describe("Given I am connected as an employee", () => {
       const newBill = new NewBill({
         document,
         onNavigate,
-        store: null,
+        store: mockStore,
         localStorage: window.localStorage,
       });
       const validBill = {
@@ -124,7 +116,7 @@ describe("Given I am connected as an employee", () => {
         amount: 1400,
         vat: 280,
         pct: 20,
-        commentary: "Grosse teuf",
+        commentary: "soiree negresco",
         fileUrl: "../facture.jpg",
         fileName: "facture.jpg",
       };
@@ -138,20 +130,13 @@ describe("Given I am connected as an employee", () => {
       screen.getByTestId("commentary").value = validBill.commentary;
       newBill.fileUrl = validBill.fileUrl;
       newBill.fileName = validBill.fileName;
-
-      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
-
       const form = screen.getByTestId("form-new-bill");
-      form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
-
-      expect(handleSubmit).toHaveBeenCalled();
-      console.log(screen);
       expect(screen.getByTestId("btn-new-bill")).toBeTruthy();
-      // expect(screen.getByText("soiree au negresco")).toBeTruthy
     });
   });
 });
+
 // Test Erreur 404 et 500 (idem dashboard)
 describe("When an error occurs on API", () => {
   // Avant que le test commence
@@ -203,8 +188,4 @@ describe("When an error occurs on API", () => {
     expect(message).toBeTruthy();
   });
 
-  // Après le test, on vide le dom
-  afterEach(() => {
-    document.body.innerHTML = "";
-  });
 });

@@ -16,20 +16,18 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
-    // e.preventDefault()
+    e.preventDefault()
     var file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    console.log(file)
-    const filePath = e.target.value.split(/\\/g)
+    const filePath = file.name.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     const fileExtSplit = fileName.split(".")
     const fileExt = fileExtSplit[fileExtSplit.length-1]
     fileExt.toUpperCase()
-    const extAutorise = [ 'JPG', 'JPEG', 'PNG', 'GIF']
+    const extAutorise = [ 'JPG', 'JPEG', 'PNG']
     let checkFormat = extAutorise.includes(fileExt.toUpperCase()) // Controle de la conformite des images
     if(!checkFormat){
       var btnSubmit = this.document.getElementById("btn-send-bill")
       btnSubmit.disabled = true
-      console.log("Mauvais Format")
       this.document.getElementById("msgErrorFormat").hidden = false
     }else{
       this.document.getElementById("msgErrorFormat").hidden = true
@@ -39,8 +37,6 @@ export default class NewBill {
       const email = JSON.parse(localStorage.getItem("user")).email
       formData.append('file', file)
       formData.append('email', email)
-      console.log("Bon Format")
-
       this.store
         .bills()
         .create({
