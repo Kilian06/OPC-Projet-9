@@ -29,7 +29,7 @@ describe("Given I am connected as an employee", () => {
 
   // Test pour vérifier l'apparition d'un message et de la désactivation du bouton lors du chargement d'une PJ
   describe("When i load a file with the wrong extension in the input form", () => {
-    test("Then an error msg is not hidden and the sub is disable", () => {
+    test("Then an error msg is not hidden and the sub is still disable", () => {
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
@@ -40,13 +40,13 @@ describe("Given I am connected as an employee", () => {
         localStorage: window,
         localStorage,
       });  
-      const fichier = screen.getByTestId("file");
+      const fichier = screen.getByTestId("file"); // récup de l'input
       const verifFormat = new File(["scan.pdf"], "scan.pdf", {
-        type: "application/pdf",
+        type: "application/pdf", // nouveau fichier déposé
       });
-      userEvent.upload(fichier,verifFormat)
-      expect(screen.getByTestId("btn-sub-newbill").disabled).toBe(true)
-      expect(screen.getByTestId("msgErrorFormat").hidden).toBe(false)
+      userEvent.upload(fichier,verifFormat) // upload du fichier
+      expect(screen.getByTestId("btn-sub-newbill").disabled).toBe(true) // verif que le bouton est bien disable
+      expect(screen.getByTestId("msgErrorFormat").hidden).toBe(false) // vérifi que le message d'erreur est visible
     });
   });
   // Test pour vérifier la non apparition d'un message et de la réactivation du bouton lors du chargement d'une PJ
@@ -62,20 +62,20 @@ describe("Given I am connected as an employee", () => {
         localStorage: window,
         localStorage,
       });  
-      const fichier = screen.getByTestId("file");
+      const fichier = screen.getByTestId("file"); // récup de l'input
       const verifFormat = new File(["scan"], "scan.png", {
-        type: "image/png",
+        type: "image/png",// nouveau fichier déposé
       });
-      userEvent.upload(fichier,verifFormat)
-      expect(screen.getByTestId("btn-sub-newbill").disabled).toBe(false)
-      expect(screen.getByTestId("msgErrorFormat").hidden).toBe(true)
-      const submitBill = jest.fn((e) => newBill.handleSubmit(e));
-      screen
-        .getByTestId("form-new-bill")
-        .addEventListener("submit", submitBill);
-      fireEvent.submit(screen.getByTestId("form-new-bill"));
-      expect(submitBill).toHaveBeenCalled();
-      expect(screen.getByTestId("btn-new-bill")).toBeTruthy();
+      userEvent.upload(fichier,verifFormat) // upload du fichier
+      expect(screen.getByTestId("btn-sub-newbill").disabled).toBe(false) // verif que le bouton n'est pas disable
+      expect(screen.getByTestId("msgErrorFormat").hidden).toBe(true) // vérifi que le message d'erreur est invisible
+      // const submitBill = jest.fn((e) => newBill.handleSubmit(e));
+      // screen
+      //   .getByTestId("form-new-bill")
+      //   .addEventListener("submit", submitBill);
+      // fireEvent.submit(screen.getByTestId("form-new-bill"));
+      // expect(submitBill).toHaveBeenCalled(); ==> Ca sert a rien
+      // expect(screen.getByTestId("btn-new-bill")).toBeTruthy();
     });
   });
 });

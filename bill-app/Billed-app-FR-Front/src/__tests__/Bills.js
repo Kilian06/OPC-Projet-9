@@ -12,11 +12,6 @@ import Bills from "../containers/Bills.js";
 import mockStore from "../__mocks__/store";
 import '@testing-library/jest-dom'
 
-
-
-
-
-
 import router from "../app/Router.js";
 
 describe("Given I am connected as an employee", () => {
@@ -31,7 +26,7 @@ describe("Given I am connected as an employee", () => {
       root.setAttribute("id", "root")
       document.body.append(root)
       router()
-      window.onNavigate(ROUTES_PATH.Bills)
+      window.onNavigate(ROUTES_PATH.Bills) // '#employee/bills',
 
       await waitFor(() => screen.getByTestId('icon-window'))
       const windowIcon = screen.getByTestId('icon-window')
@@ -40,6 +35,7 @@ describe("Given I am connected as an employee", () => {
     })
     test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills })
+      console.log(document.root)
       const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
       const antiChrono = (a, b) => (a - b)
       // const antiChrono = (a, b) => ((a < b) ? 1 : -1) J'ai changé ca mais je ne suis pas certain...
@@ -63,14 +59,13 @@ describe("Given I am connected as an employee", () => {
         document.body.innerHTML = ROUTES({ pathname });
       };
       const billsContainer = new Bills({document,onNavigate,localStorage: localStorageMock,store: null,});
-      $.fn.modal = jest.fn(); // pour la gestion de la modal ?
-      const handleClickIconEye = () => {
+      $.fn.modal = jest.fn(); // pour la gestion de la modal
+      const handleClickIconEye = () => { // fonction d'ouverture de la modal
         billsContainer.handleClickIconEye;
       };
-      const firstEyeIcon = screen.getAllByTestId("icon-eye")[0];
-    firstEyeIcon.addEventListener("click", handleClickIconEye);
-    fireEvent.click(firstEyeIcon);  
-    expect(screen.getAllByTestId("imgmodal")).toBeTruthy()
+      const firstEyeIcon = screen.getAllByTestId("icon-eye")[0];// premier oeil 
+    fireEvent.click(firstEyeIcon);  // click sur l'oeil
+    expect(screen.getAllByTestId("imgmodal")).toBeTruthy() // verification du testid pour voir si modal ouverte
     })
   })
 
@@ -91,11 +86,11 @@ describe("When i click on Nouvelle note de frais button ", () => {
       bills: bills,
       localStorage: window.localStorage
     })
-    const OpenNewBill = jest.fn(billsPage.handleClickNewBill);
+    // const OpenNewBill = jest.fn(billsPage.handleClickNewBill);   ===> Ca sert a rien ?
     const btnNewBill = screen.getByTestId("btn-new-bill")
-    btnNewBill.addEventListener("click", OpenNewBill)
+    // btnNewBill.addEventListener("click", OpenNewBill);   ===> Ca sert a rien ?
     fireEvent.click(btnNewBill)
-    expect(OpenNewBill).toHaveBeenCalled()
+    // expect(OpenNewBill).toHaveBeenCalled();   ===> Ca sert a rien ?
     expect(screen.getByText("Envoyer une note de frais")).toBeTruthy()
   })
 })
@@ -111,9 +106,9 @@ describe("When i click on Nouvelle note de frais button ", () => {
       });
     const billsmock = bills
     const getBills = jest.fn(() => billsNew.getBills());
-    const value = await getBills();
+    const listBills = await getBills();
     expect(getBills).toHaveBeenCalled();
-    expect(value.length).toBe(billsmock.length);
+    expect(listBills.length).toBe(billsmock.length); // compare la longueur
   })
   })
 
