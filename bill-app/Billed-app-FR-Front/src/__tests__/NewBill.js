@@ -69,13 +69,8 @@ describe("Given I am connected as an employee", () => {
       userEvent.upload(fichier,verifFormat) // upload du fichier
       expect(screen.getByTestId("btn-sub-newbill").disabled).toBe(false) // verif que le bouton n'est pas disable
       expect(screen.getByTestId("msgErrorFormat").hidden).toBe(true) // vérifi que le message d'erreur est invisible
-      // const submitBill = jest.fn((e) => newBill.handleSubmit(e));
-      // screen
-      //   .getByTestId("form-new-bill")
-      //   .addEventListener("submit", submitBill);
-      // fireEvent.submit(screen.getByTestId("form-new-bill"));
-      // expect(submitBill).toHaveBeenCalled(); ==> Ca sert a rien
-      // expect(screen.getByTestId("btn-new-bill")).toBeTruthy();
+      fireEvent.submit(screen.getByTestId("form-new-bill"));
+      expect(screen.getByTestId("btn-new-bill")).toBeTruthy();
     });
   });
 });
@@ -155,7 +150,8 @@ describe("When an error occurs on API", () => {
   });
 
   // erreur 404
-  test("fetches bills from an API and fails with 404 message error", async () => {
+  describe("When an error occurs on API with fails with 404 error", () => {
+  test("Then a message Erreur 404 is display on screen", async () => {
     mockStore.bills.mockImplementationOnce(() => {
       return {
         list: () => {
@@ -170,10 +166,12 @@ describe("When an error occurs on API", () => {
     const message = await screen.getByText(/Erreur 404/);
     expect(message).toBeTruthy();
   });
+});
 
   // Erreur 500
-  test("fetches messages from an API and fails with 500 message error", async () => {
-    mockStore.bills.mockImplementationOnce(() => {
+  describe("When an error occurs on API with fails with 500 error", () => {
+    test("Then a message Erreur 500 is display on screen", async () => {
+      mockStore.bills.mockImplementationOnce(() => {
       return {
         list: () => {
           // Si erreur 500, la promesse est rejetée
@@ -188,4 +186,5 @@ describe("When an error occurs on API", () => {
     expect(message).toBeTruthy();
   });
 
+});
 });

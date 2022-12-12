@@ -150,11 +150,9 @@ export default class {
             this.document.getElementById(`open-bill${bill.id}`).addEventListener("click",(e) => {
               e.stopImmediatePropagation()
               this.handleEditTicket(e, bill, bills)
-      
             }
               )
           }
-
     })
 
   }
@@ -192,3 +190,4 @@ export default class {
     }
   }
 }
+
