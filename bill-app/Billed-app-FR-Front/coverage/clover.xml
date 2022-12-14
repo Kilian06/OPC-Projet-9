@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1670833595745" clover="3.2.0">
-  <project timestamp="1670833595745" name="All files">
+<coverage generated="1670849690100" clover="3.2.0">
+  <project timestamp="1670849690100" name="All files">
     <metrics statements="235" coveredstatements="215" conditionals="100" coveredconditionals="82" methods="69" coveredmethods="56" elements="404" coveredelements="353" complexity="0" loc="235" ncloc="235" packages="3" files="16" classes="16"/>
     <package name="constants">
       <metrics statements="8" coveredstatements="8" conditionals="5" coveredconditionals="5" methods="1" coveredmethods="1"/>
@@ -122,13 +122,13 @@
         <line num="150" count="9" type="stmt"/>
         <line num="151" count="3" type="stmt"/>
         <line num="152" count="3" type="stmt"/>
-        <line num="162" count="14" type="stmt"/>
-        <line num="163" count="5" type="cond" truecount="1" falsecount="1"/>
-        <line num="164" count="5" type="stmt"/>
-        <line num="168" count="3" type="stmt"/>
-        <line num="169" count="12" type="stmt"/>
-        <line num="175" count="3" type="stmt"/>
-        <line num="178" count="2" type="stmt"/>
+        <line num="160" count="14" type="stmt"/>
+        <line num="161" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="162" count="5" type="stmt"/>
+        <line num="166" count="3" type="stmt"/>
+        <line num="167" count="12" type="stmt"/>
+        <line num="173" count="3" type="stmt"/>
+        <line num="176" count="2" type="stmt"/>
       </file>
       <file name="Login.js" path="/Users/kilian/Documents/GitHub/OPC-Projet-9/bill-app/Billed-app-FR-Front/src/containers/Login.js">
         <metrics statements="41" coveredstatements="30" conditionals="4" coveredconditionals="0" methods="11" coveredmethods="5"/>

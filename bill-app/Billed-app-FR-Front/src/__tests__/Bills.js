@@ -45,7 +45,6 @@ describe("Given I am connected as an employee", () => {
         )
         .map((a) => a.innerHTML);
       const antiChrono = (a, b) => a - b;
-      // const antiChrono = (a, b) => ((a < b) ? 1 : -1) J'ai changé ca pour rendre le test fonctionnel
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
     });
@@ -102,11 +101,8 @@ describe("Given I am connected as an employee", () => {
         bills: bills,
         localStorage: window.localStorage,
       });
-      // const OpenNewBill = jest.fn(billsPage.handleClickNewBill);   ===> Ca sert a rien ?
       const btnNewBill = screen.getByTestId("btn-new-bill");
-      // btnNewBill.addEventListener("click", OpenNewBill);   ===> Ca sert a rien ?
       fireEvent.click(btnNewBill);
-      // expect(OpenNewBill).toHaveBeenCalled();   ===> Ca sert a rien ?
       expect(screen.getByText("Envoyer une note de frais")).toBeTruthy();
     });
   });
@@ -124,6 +120,7 @@ describe("Given I am connected as an employee", () => {
       const getBills = jest.fn(() => billsNew.getBills());
       const listBills = await getBills();
       expect(getBills).toHaveBeenCalled();
+      console.log(listBills.length)
       expect(listBills.length).toBe(billsmock.length); // compare la longueur
     });
   });
